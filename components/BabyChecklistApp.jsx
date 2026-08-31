@@ -1,6 +1,7 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { ChevronDown, ChevronRight, Check, ExternalLink, ArrowLeft, Sprout } from "lucide-react";
+import { track } from "@vercel/analytics";
 
 const DATA = {
   stages: [
@@ -16,6 +17,8 @@ const DATA = {
             { id: "bottle", name: "젖병 (2~4개)", required: true, condition: "new_not_recommended", price: "5천 ~ 3만원", reason: "실리콘 마모, 세균 잔존 우려", newQ: "젖병 세트", usedQ: "젖병" },
             { id: "breast-pump", name: "유축기", required: true, note: "모유수유 시", condition: "new_strong", price: "3만 ~ 40만원", reason: "모터 수명, 위생 문제로 렌탈이 대안", newQ: "전동 유축기", usedQ: null },
             { id: "formula-maker", name: "분유포트/조유기", required: false, condition: "used_ok", price: "5만 ~ 15만원", reason: "세척만 잘 되면 무방", newQ: "분유포트", usedQ: "분유포트" },
+            { id: "formula-case", name: "분유케이스(외출용)", required: false, condition: "used_ok", price: "1만~2만원", reason: "외출 시 1회분씩 소분 휴대용, 세척 후 사용 무방", newQ: "분유케이스", usedQ: "분유케이스" },
+            { id: "bottle-brush", name: "젖병솔/세정제", required: true, condition: "new_consumable", price: "1만원대", reason: "위생용품, 소모품", newQ: "젖병솔 세정제", usedQ: null },
             { id: "nursing-pillow", name: "수유쿠션", required: false, condition: "used_ok", price: "2만 ~ 5만원", reason: "커버만 새로 세탁하면 OK", newQ: "수유쿠션", usedQ: "수유쿠션" },
             { id: "burp-cloth", name: "가제/엠보 손수건", required: true, condition: "new_ok", price: "세트 1만~2만원대", reason: "다다익선 아이템, 거즈 30~40장+엠보 20~30장 정도는 준비하는 경우가 많음", newQ: "가제손수건 세트", usedQ: null },
             { id: "bottle-sterilizer", name: "젖병소독기", required: false, condition: "used_ok", price: "5만 ~ 15만원", reason: "전자기기, 작동만 확인되면 무방. 냄비 열탕소독으로 대체 가능", newQ: "젖병소독기", usedQ: "젖병소독기" },
@@ -28,7 +31,8 @@ const DATA = {
           label: "수면",
           items: [
             { id: "crib", name: "아기침대/요람 프레임", required: true, condition: "used_ok", price: "10만 ~ 30만원", reason: "구조 안전(간격 6cm 이내) 확인", newQ: "아기침대", usedQ: "아기침대" },
-            { id: "mattress", name: "매트리스", required: true, condition: "new_strong", price: "5만 ~ 15만원", reason: "처짐·위생 확인 어려움, 안전과 직결", newQ: "아기 매트리스", usedQ: null },
+            { id: "mattress", name: "매트리스", required: true, condition: "new_strong", price: "5만 ~ 15만원", reason: "대한소아청소년과학회 권고상 단단한 매트리스가 SIDS 예방에 중요, 중고는 처짐 정도 확인이 어려움", newQ: "아기 매트리스", usedQ: null },
+            { id: "pacifier", name: "공갈젖꼭지", required: false, note: "모유수유 익숙해진 생후 1개월부터", condition: "new_strong", price: "5천~1만원", reason: "대한소아청소년과학회 권고상 SIDS 예방에 도움, 입에 직접 닿아 새것 필수", newQ: "공갈젖꼭지", usedQ: null },
             { id: "swaddle", name: "속싸개", required: true, condition: "used_ok", price: "세트 2만원대", reason: "세탁 후 사용 무방", newQ: "속싸개 세트", usedQ: "속싸개" },
             { id: "wrap", name: "겉싸개/우주복", required: true, condition: "used_ok", price: "개당 1만원대", reason: "성장 빨라 중고 활용도 높음", newQ: "신생아 우주복", usedQ: "신생아 우주복" },
             { id: "blanket", name: "이불/블랭킷", required: true, condition: "used_ok", price: "1만~3만원", reason: "세탁 후 사용 무방, 계절별로 여러 장 필요", newQ: "아기 이불 블랭킷", usedQ: "아기 이불" },
@@ -71,17 +75,18 @@ const DATA = {
           id: "not-recommended-0",
           label: "구매 비추천",
           items: [
-            { id: "bumper-guard", name: "침대 범퍼가드", required: false, condition: "not_recommended", price: "-", reason: "질식·끼임 위험으로 미국소아과학회(AAP)가 사용을 권고하지 않음", newQ: null, usedQ: null },
-            { id: "newborn-pillow", name: "신생아 베개/옆잠쿠션", required: false, condition: "not_recommended", price: "-", reason: "영아돌연사증후군(SIDS) 위험으로 비권장", newQ: null, usedQ: null },
-            { id: "wipe-warmer", name: "물티슈워머", required: false, condition: "not_recommended", price: "-", reason: "실사용 후기에서 자주 '돈 아까운 템'으로 꼽힘", newQ: null, usedQ: null },
-            { id: "bottle-warmer", name: "젖병워머", required: false, condition: "not_recommended", price: "-", reason: "전자레인지·중탕으로 대체 가능, 실사용 후기에서 비추천 많음", newQ: null, usedQ: null },
+            { id: "newborn-pillow", name: "신생아 베개/옆잠쿠션", required: false, condition: "not_recommended", price: "1만 ~ 2만원", reason: "영아돌연사증후군(SIDS) 위험으로 비권장", newQ: null, usedQ: null },
+            { id: "carseat-accessory", name: "카시트 애프터마켓 액세서리(장식 스트랩커버 등)", required: false, condition: "not_recommended", price: "1만~3만원", reason: "제조사 크래시테스트를 거치지 않은 비순정 액세서리는 충돌 시 안전성이 검증되지 않아 카시트 제조사 대부분이 비권장", newQ: null, usedQ: null },
+            { id: "uv-sterilizer", name: "젖꼭지 자외선소독기", required: false, condition: "not_recommended", price: "3만~8만원", reason: "열탕 소독으로 충분히 대체 가능, 실사용 필요성 낮다는 후기 많음", newQ: null, usedQ: null },
+            { id: "wipe-warmer", name: "물티슈워머", required: false, condition: "not_recommended", price: "3만 ~ 6만원", reason: "실사용 후기에서 자주 '돈 아까운 템'으로 꼽힘", newQ: null, usedQ: null },
+            { id: "bottle-warmer", name: "젖병워머", required: false, condition: "not_recommended", price: "2만 ~ 4만원", reason: "전자레인지·중탕으로 대체 가능, 실사용 후기에서 비추천 많음", newQ: null, usedQ: null },
           ],
         },
         {
           id: "safety",
           label: "안전",
           items: [
-            { id: "carseat", name: "카시트", required: true, condition: "new_strong", price: "15만 ~ 50만원", reason: "사고이력 확인 불가, 제조 6년 이내만 사용 권장", newQ: "신생아 카시트", usedQ: null },
+            { id: "carseat", name: "카시트", required: true, condition: "new_strong", price: "15만 ~ 50만원", reason: "사고이력·미세균열 확인 불가, 제조일 기준 보통 5~6년 지나면 소재 노후화로 교체 권장", newQ: "신생아 카시트", usedQ: null },
             { id: "monitor", name: "아기모니터", required: false, condition: "used_ok", price: "5만 ~ 15만원", reason: "전자기기, 작동 확인 필수", newQ: "아기모니터", usedQ: "아기모니터" },
             { id: "bed-guard", name: "베드가드", required: false, note: "성인 침대 같이 쓸 경우", condition: "used_ok", price: "2만~5만원", reason: "침대에서 떨어짐 방지, 고정 상태만 확인되면 중고 무방", newQ: "베드가드", usedQ: "베드가드" },
           ],
@@ -117,6 +122,7 @@ const DATA = {
           items: [
             { id: "bouncer", name: "바운서", required: false, condition: "used_ok", price: "5만 ~ 15만원", reason: "사용기간 짧아 중고 활용도 높음", newQ: "아기 바운서", usedQ: "바운서" },
             { id: "mobile", name: "딸랑이/모빌", required: false, condition: "used_ok", price: "1만 ~ 3만원", reason: "소독 후 사용", newQ: "아기 모빌", usedQ: "모빌" },
+            { id: "bw-book", name: "흑백/고대비 그림책", required: false, note: "시력 발달 초기 단계", condition: "used_ok", price: "1만~2만원", reason: "생후 1~3개월 시각 발달에 활용, 오염만 없으면 중고 무방", newQ: "흑백 그림책 신생아", usedQ: "흑백 그림책" },
             { id: "flat-head-pillow", name: "짱구베개", required: false, note: "목 가누기 시작 후", condition: "used_ok", price: "1만 ~ 3만원", reason: "두상 관리용, 3~6개월경 사용하는 경우가 많음", newQ: "짱구베개", usedQ: "짱구베개" },
             { id: "tummy-mat", name: "터미타임 매트", required: false, note: "생후 2개월경부터", condition: "used_ok", price: "3만~8만원", reason: "엎드려 놀기 연습용, 목·어깨 근력 발달에 도움", newQ: "터미타임 매트", usedQ: "터미타임 매트" },
           ],
@@ -142,7 +148,7 @@ const DATA = {
           id: "not-recommended-1",
           label: "구매 비추천",
           items: [
-            { id: "baby-shoes", name: "아기 신발(보행 전)", required: false, condition: "not_recommended", price: "-", reason: "아직 걷지 않는 시기라 발 성장에 방해될 수 있어 불필요, 양말이면 충분", newQ: null, usedQ: null },
+            { id: "baby-shoes", name: "아기 신발(보행 전)", required: false, condition: "not_recommended", price: "1만 ~ 3만원", reason: "아직 걷지 않는 시기라 발 성장에 방해될 수 있어 불필요, 양말이면 충분", newQ: null, usedQ: null },
           ],
         },
       ],
@@ -178,6 +184,7 @@ const DATA = {
           label: "위생",
           items: [
             { id: "bib", name: "턱받이", required: true, condition: "used_ok", price: "세트 1만원대", reason: "세탁 후 사용", newQ: "이유식 턱받이", usedQ: "턱받이" },
+            { id: "sippy-cup", name: "물컵/빨대컵", required: false, note: "6개월 근접 시", condition: "new_ok", price: "1만~2만원", reason: "입에 직접 닿음, 새것 권장", newQ: "아기 빨대컵", usedQ: null },
             { id: "gum-brush", name: "잇몸 마사지 실리콘 칫솔", required: false, note: "침 흘림·잇몸 가려움 시작 시", condition: "new_ok", price: "5천~1만원", reason: "입에 직접 닿음, 새것 권장", newQ: "유아 잇몸 마사지 칫솔", usedQ: null },
           ],
         },
@@ -194,14 +201,16 @@ const DATA = {
           items: [
             { id: "outlet-cover", name: "콘센트 안전커버", required: true, condition: "new_consumable", price: "세트 5천~1만원", reason: "뒤집기·기어다니기 전에 미리 설치하면 편함", newQ: "콘센트 안전커버", usedQ: null },
             { id: "corner-guard", name: "모서리 보호대", required: false, condition: "new_consumable", price: "세트 1만원대", reason: "가구 모서리 부딪힘 방지, 활동 반경 넓어지기 전 준비", newQ: "모서리 보호대", usedQ: null },
+            { id: "safety-gate", name: "안전문(주방/계단)", required: false, note: "기어다니기 시작 전 미리 준비하면 편함", condition: "used_ok", price: "3만 ~ 8만원", reason: "고정 상태만 확인되면 중고 무방", newQ: "안전문", usedQ: "안전문" },
           ],
         },
         {
           id: "not-recommended-3",
           label: "구매 비추천",
           items: [
-            { id: "walker", name: "보행기", required: false, condition: "not_recommended", price: "-", reason: "안전·발달 관련 논란으로 비권장하는 의견이 많음", newQ: null, usedQ: null },
-            { id: "food-maker", name: "이유식제조기", required: false, condition: "not_recommended", price: "-", reason: "가성비 낮다는 후기 많음, 조리도구 조합으로 대체 가능", newQ: null, usedQ: null },
+            { id: "walker", name: "보행기", required: false, condition: "not_recommended", price: "5만 ~ 10만원", reason: "안전·발달 관련 논란으로 비권장하는 의견이 많음", newQ: null, usedQ: null },
+            { id: "food-maker", name: "이유식제조기", required: false, condition: "not_recommended", price: "5만 ~ 15만원", reason: "가성비 낮다는 후기 많음, 조리도구 조합으로 대체 가능", newQ: null, usedQ: null },
+            { id: "teething-gel", name: "이앓이젤(벤조카인 성분)", required: false, condition: "not_recommended", price: "5천~1만원", reason: "메트헤모글로빈혈증 위험으로 식약처가 24개월 미만 영아 사용을 금지함", newQ: null, usedQ: null },
           ],
         },
       ],
@@ -264,6 +273,33 @@ export default function BabyChecklistApp() {
   const [expanded, setExpanded] = useState(null);
   const [requiredOnly, setRequiredOnly] = useState(false);
   const [collapsedCats, setCollapsedCats] = useState({});
+  const [loaded, setLoaded] = useState(false);
+
+  const STORAGE_KEY = "baby-checklist-state-v1";
+
+  // 처음 열릴 때 저장된 상태 불러오기
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (saved.checked) setChecked(saved.checked);
+      }
+    } catch (e) {
+      // 저장된 데이터가 없거나 읽기 실패 시 그냥 빈 상태로 시작
+    }
+    setLoaded(true);
+  }, []);
+
+  // 체크 상태가 바뀔 때마다 저장 (최초 로딩 전에는 덮어쓰지 않도록 방지)
+  useEffect(() => {
+    if (!loaded) return;
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ checked }));
+    } catch (e) {
+      // 저장 실패해도 앱 사용에는 지장 없도록 무시
+    }
+  }, [checked, loaded]);
 
   const stage = useMemo(() => DATA.stages.find((s) => s.id === stageId), [stageId]);
 
@@ -326,6 +362,7 @@ export default function BabyChecklistApp() {
               onSelect={(id) => {
                 setStageId(id);
                 setScreen("checklist");
+                track("stage_selected", { stage: id });
                 const target = DATA.stages.find((s) => s.id === id);
                 if (target) {
                   const initial = {};
@@ -437,6 +474,7 @@ export default function BabyChecklistApp() {
                                     href={coupangUrl(it.newQ)}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    onClick={() => track("click_buy_new", { item: it.id })}
                                     className="text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1.5 rounded-lg flex items-center gap-1 hover:bg-amber-100"
                                   >
                                     새것 구매 <ExternalLink size={12} />
@@ -447,6 +485,7 @@ export default function BabyChecklistApp() {
                                       href={daangnUrl(it.usedQ)}
                                       target="_blank"
                                       rel="noopener noreferrer"
+                                      onClick={() => track("click_find_used", { item: it.id })}
                                       className="text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-lg flex items-center gap-1 hover:bg-emerald-100"
                                     >
                                       중고 찾기 <ExternalLink size={12} />
@@ -518,8 +557,22 @@ export default function BabyChecklistApp() {
               </div>
             )}
           </div>
+          <button
+            onClick={() => {
+              if (window.confirm("체크한 내용을 모두 초기화할까요?")) {
+                setChecked({});
+              }
+            }}
+            className="w-full text-center text-xs text-stone-400 mt-6 hover:text-stone-600"
+          >
+            체크 내용 초기화
+          </button>
         </div>
       )}
+
+      <p className="text-center text-[11px] text-stone-400 py-4 px-6">
+        이 콘텐츠는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
+      </p>
     </div>
   );
 }
