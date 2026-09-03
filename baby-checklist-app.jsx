@@ -74,12 +74,18 @@ const DATA = {
           ],
         },
         {
+          id: "play0",
+          label: "놀이",
+          items: [
+            { id: "bw-book", name: "흑백/고대비 그림책", required: false, note: "신생아 때부터 사용 가능", condition: "used_ok", price: "1만~2만원", reason: "신생아는 초점이 흐릿해 고대비 패턴에 더 잘 반응, 생후 1~3개월경 시각 발달에 특히 활용도 높음. 오염만 없으면 중고 무방", newQ: "흑백 그림책 신생아", usedQ: "흑백 그림책" },
+          ],
+        },
+        {
           id: "not-recommended-0",
           label: "구매 비추천",
           items: [
             { id: "newborn-pillow", name: "신생아 베개/옆잠쿠션", required: false, condition: "not_recommended", price: "1만 ~ 2만원", reason: "영아돌연사증후군(SIDS) 위험으로 비권장", newQ: null, usedQ: null },
             { id: "carseat-accessory", name: "카시트 애프터마켓 액세서리(장식 스트랩커버 등)", required: false, condition: "not_recommended", price: "1만~3만원", reason: "제조사 크래시테스트를 거치지 않은 비순정 액세서리는 충돌 시 안전성이 검증되지 않아 카시트 제조사 대부분이 비권장", newQ: null, usedQ: null },
-            { id: "thick-coat-carseat", name: "두꺼운 패딩/우주복째로 카시트 태우기", required: false, condition: "not_recommended", price: "-", reason: "두꺼운 외투를 입은 채 하네스를 채우면 벨트 밀착력이 떨어져 사고 시 카시트에서 몸이 빠지는 '슬립스루' 위험이 커진다는 실험 결과가 국내외에서 보도됨(ADAC·NHTSA 등)", newQ: null, usedQ: null },
             { id: "wipe-warmer", name: "물티슈워머", required: false, condition: "not_recommended", price: "3만 ~ 6만원", reason: "작동 온도 자체는 무해하지만, 보존력이 약한 제품·관리 소홀 시 세균 번식 가능성이 있어 청소·물 교체가 필요", newQ: null, usedQ: null },
             { id: "bottle-warmer", name: "젖병워머", required: false, condition: "not_recommended", price: "2만 ~ 4만원", reason: "전자레인지·중탕으로 대체 가능, 실사용 후기에서 비추천 많음", newQ: null, usedQ: null },
           ],
@@ -131,7 +137,6 @@ const DATA = {
           items: [
             { id: "bouncer", name: "바운서", required: false, condition: "used_ok", price: "5만 ~ 15만원", reason: "사용기간 짧아 중고 활용도 높음", newQ: "아기 바운서", usedQ: "바운서" },
             { id: "mobile", name: "딸랑이/모빌", required: false, condition: "used_ok", price: "1만 ~ 3만원", reason: "소독 후 사용", newQ: "아기 모빌", usedQ: "모빌" },
-            { id: "bw-book", name: "흑백/고대비 그림책", required: false, note: "시력 발달 초기 단계", condition: "used_ok", price: "1만~2만원", reason: "생후 1~3개월 시각 발달에 활용, 오염만 없으면 중고 무방", newQ: "흑백 그림책 신생아", usedQ: "흑백 그림책" },
             { id: "tummy-mat", name: "터미타임 매트", required: false, note: "터미타임 자체는 생후 1~2주부터 짧게(1~2분) 시작 가능, 매트는 목을 좀 더 가누는 시기부터 활용도 높음", condition: "used_ok", price: "3만~8만원", reason: "엎드려 놀기 연습용, 목·어깨 근력 발달에 도움. 초기엔 매트 없이 보호자 가슴 위에서 시작해도 됨", newQ: "터미타임 매트", usedQ: "터미타임 매트" },
           ],
         },
