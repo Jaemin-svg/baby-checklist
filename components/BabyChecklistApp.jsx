@@ -21,7 +21,7 @@ const DATA = {
             { id: "bottle-brush", name: "젖병솔/세정제", required: true, condition: "new_consumable", price: "1만원대", reason: "위생용품, 소모품", newQ: "젖병솔 세정제", usedQ: null },
             { id: "nursing-pillow", name: "수유쿠션", required: false, condition: "used_ok", price: "2만 ~ 5만원", reason: "커버만 새로 세탁하면 OK", newQ: "수유쿠션", usedQ: "수유쿠션" },
             { id: "burp-cloth", name: "가제/엠보 손수건", required: true, condition: "new_ok", price: "세트 1만~2만원대", reason: "다다익선 아이템, 거즈 30~40장+엠보 20~30장 정도는 준비하는 경우가 많음", newQ: "가제손수건 세트", usedQ: null },
-            { id: "bottle-sterilizer", name: "젖병소독기", required: false, condition: "used_ok", price: "5만 ~ 15만원", reason: "전자기기, 작동만 확인되면 무방. 냄비 열탕소독으로 대체 가능", newQ: "젖병소독기", usedQ: "젖병소독기" },
+            { id: "bottle-sterilizer", name: "젖병소독기(스팀 또는 UV 방식)", required: false, condition: "used_ok", price: "5만 ~ 15만원", reason: "스팀 방식은 전자기기, 작동만 확인되면 무방. UV 방식도 환경호르몬 우려는 근거가 약하다고 알려져 있으며, 반복 노출 시 소재 변색 정도만 참고하면 됨. 냄비 열탕소독으로도 대체 가능", newQ: "젖병소독기", usedQ: "젖병소독기" },
             { id: "night-light", name: "수유등", required: false, condition: "used_ok", price: "1만~3만원", reason: "밤중 수유·기저귀 교체 시 은은한 조명용", newQ: "수유등", usedQ: "수유등" },
             { id: "bottle-rack", name: "젖병건조대", required: false, condition: "used_ok", price: "1만~2만원", reason: "세척만 잘 되면 무방", newQ: "젖병건조대", usedQ: "젖병건조대" },
           ],
@@ -77,8 +77,8 @@ const DATA = {
           items: [
             { id: "newborn-pillow", name: "신생아 베개/옆잠쿠션", required: false, condition: "not_recommended", price: "1만 ~ 2만원", reason: "영아돌연사증후군(SIDS) 위험으로 비권장", newQ: null, usedQ: null },
             { id: "carseat-accessory", name: "카시트 애프터마켓 액세서리(장식 스트랩커버 등)", required: false, condition: "not_recommended", price: "1만~3만원", reason: "제조사 크래시테스트를 거치지 않은 비순정 액세서리는 충돌 시 안전성이 검증되지 않아 카시트 제조사 대부분이 비권장", newQ: null, usedQ: null },
-            { id: "uv-sterilizer", name: "젖꼭지 자외선소독기", required: false, condition: "not_recommended", price: "3만~8만원", reason: "열탕 소독으로 충분히 대체 가능, 실사용 필요성 낮다는 후기 많음", newQ: null, usedQ: null },
-            { id: "wipe-warmer", name: "물티슈워머", required: false, condition: "not_recommended", price: "3만 ~ 6만원", reason: "실사용 후기에서 자주 '돈 아까운 템'으로 꼽힘", newQ: null, usedQ: null },
+            { id: "thick-coat-carseat", name: "두꺼운 패딩/우주복째로 카시트 태우기", required: false, condition: "not_recommended", price: "-", reason: "두꺼운 외투를 입은 채 하네스를 채우면 벨트 밀착력이 떨어져 사고 시 카시트에서 몸이 빠지는 '슬립스루' 위험이 커진다는 실험 결과가 국내외에서 보도됨(ADAC·NHTSA 등)", newQ: null, usedQ: null },
+            { id: "wipe-warmer", name: "물티슈워머", required: false, condition: "not_recommended", price: "3만 ~ 6만원", reason: "작동 온도 자체는 무해하지만, 보존력이 약한 제품·관리 소홀 시 세균 번식 가능성이 있어 청소·물 교체가 필요", newQ: null, usedQ: null },
             { id: "bottle-warmer", name: "젖병워머", required: false, condition: "not_recommended", price: "2만 ~ 4만원", reason: "전자레인지·중탕으로 대체 가능, 실사용 후기에서 비추천 많음", newQ: null, usedQ: null },
           ],
         },
@@ -87,6 +87,7 @@ const DATA = {
           label: "안전",
           items: [
             { id: "carseat", name: "카시트", required: true, condition: "new_strong", price: "15만 ~ 50만원", reason: "사고이력·미세균열 확인 불가, 제조일 기준 보통 5~6년 지나면 소재 노후화로 교체 권장", newQ: "신생아 카시트", usedQ: null },
+            { id: "carseat-blanket", name: "카시트 전용 무릎담요", required: false, condition: "used_ok", price: "2만~4만원", reason: "겨울철 카시트에서 두꺼운 패딩·우주복을 입히는 대신, 얇은 옷을 입히고 하네스를 채운 뒤 위에 덮는 용도로 권장됨", newQ: "카시트 무릎담요", usedQ: "카시트 담요" },
             { id: "monitor", name: "아기모니터", required: false, condition: "used_ok", price: "5만 ~ 15만원", reason: "전자기기, 작동 확인 필수", newQ: "아기모니터", usedQ: "아기모니터" },
             { id: "bed-guard", name: "베드가드", required: false, note: "성인 침대 같이 쓸 경우", condition: "used_ok", price: "2만~5만원", reason: "침대에서 떨어짐 방지, 고정 상태만 확인되면 중고 무방", newQ: "베드가드", usedQ: "베드가드" },
           ],
@@ -266,6 +267,11 @@ function Ruler({ stages, selected, onSelect }) {
   );
 }
 
+// 컴포넌트 바깥에 정의: 렌더링마다 다시 생성될 필요 없는 순수 함수/상수
+const STORAGE_KEY = "baby-checklist-state-v1";
+const coupangUrl = (q) => `https://www.coupang.com/np/search?q=${encodeURIComponent(q)}`;
+const daangnUrl = (q) => `https://www.daangn.com/kr/buy-sell/?in=&search=${encodeURIComponent(q)}`;
+
 export default function BabyChecklistApp() {
   const [screen, setScreen] = useState("landing");
   const [stageId, setStageId] = useState(null);
@@ -274,8 +280,6 @@ export default function BabyChecklistApp() {
   const [requiredOnly, setRequiredOnly] = useState(false);
   const [collapsedCats, setCollapsedCats] = useState({});
   const [loaded, setLoaded] = useState(false);
-
-  const STORAGE_KEY = "baby-checklist-state-v1";
 
   // 처음 열릴 때 저장된 상태 불러오기
   useEffect(() => {
@@ -311,9 +315,6 @@ export default function BabyChecklistApp() {
   const toggleCheck = (id) => setChecked((prev) => ({ ...prev, [id]: !prev[id] }));
   const toggleCat = (id) =>
     setCollapsedCats((prev) => ({ ...prev, [id]: !prev[id] }));
-
-  const coupangUrl = (q) => `https://www.coupang.com/np/search?q=${encodeURIComponent(q)}`;
-  const daangnUrl = (q) => `https://www.daangn.com/kr/buy-sell/?in=&search=${encodeURIComponent(q)}`;
 
   return (
     <div className="w-full min-h-[600px] bg-stone-50 text-stone-800 font-sans">
@@ -569,10 +570,6 @@ export default function BabyChecklistApp() {
           </button>
         </div>
       )}
-
-      <p className="text-center text-[11px] text-stone-400 py-4 px-6">
-        이 콘텐츠는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
-      </p>
     </div>
   );
 }
