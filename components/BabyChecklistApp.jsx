@@ -49,6 +49,8 @@ const DATA = {
             { id: "wipes", name: "물티슈", required: true, condition: "new_consumable", price: "팩당 5천원대", reason: "소모품", newQ: "아기 물티슈", usedQ: null },
             { id: "changing-pad", name: "기저귀갈이대", required: false, condition: "used_ok", price: "3만 ~ 15만원", reason: "구조만 튼튼하면 무방, 이케아 제품도 많이 씀", newQ: "기저귀갈이대", usedQ: "기저귀갈이대" },
             { id: "waterproof-pad", name: "방수패드", required: true, condition: "used_ok", price: "개당 5천~1만원", reason: "세탁 후 사용 무방, 여러 장 있으면 편함", newQ: "방수패드", usedQ: "방수패드" },
+            { id: "nail-scissors", name: "신생아 손톱가위", required: true, note: "생후 1~2주부터 첫 손질 필요", condition: "new_ok", price: "5천~1만원", reason: "신생아 손톱은 빠르게 자라 날카로워지고 얼굴을 긁을 수 있어 위생상 새것 권장", newQ: "신생아 손톱가위", usedQ: null },
+            { id: "lotion", name: "아기로션/바디워시", required: true, condition: "new_ok", price: "세트 2만~4만원", reason: "피부 자극 적은 저자극 제품 권장, 소모품", newQ: "아기 로션 바디워시", usedQ: null },
           ],
         },
         {
@@ -92,6 +94,14 @@ const DATA = {
             { id: "bed-guard", name: "베드가드", required: false, note: "성인 침대 같이 쓸 경우", condition: "used_ok", price: "2만~5만원", reason: "침대에서 떨어짐 방지, 고정 상태만 확인되면 중고 무방", newQ: "베드가드", usedQ: "베드가드" },
           ],
         },
+        {
+          id: "outing0",
+          label: "외출",
+          items: [
+            { id: "carrier", name: "아기띠(신생아용)", required: true, condition: "used_ok", price: "5만 ~ 15만원", reason: "병원 진료·예방접종 등으로 이른 시기부터 외출이 필요할 수 있음. 버클·봉제 상태 확인, 세탁 후 사용", newQ: "신생아 아기띠", usedQ: "아기띠" },
+            { id: "car-mirror", name: "카시트 후방거울", required: false, condition: "used_ok", price: "1만~2만원", reason: "카시트를 쓰기 시작하는 시점(퇴원길)부터 함께 필요, 뒷좌석 카시트 아기 확인용", newQ: "카시트 후방거울", usedQ: "카시트 후방거울" },
+          ],
+        },
       ],
     },
     {
@@ -111,9 +121,7 @@ const DATA = {
           label: "외출",
           items: [
             { id: "stroller", name: "유모차", required: true, condition: "used_ok", price: "20만 ~ 80만원", reason: "바퀴·브레이크·프레임 뒤틀림 확인", newQ: "신생아 유모차", usedQ: "유모차" },
-            { id: "carrier", name: "아기띠(신생아용)", required: true, condition: "used_ok", price: "5만 ~ 15만원", reason: "버클·봉제 상태 확인, 세탁 후 사용", newQ: "신생아 아기띠", usedQ: "아기띠" },
             { id: "diaper-bag", name: "기저귀가방", required: false, condition: "used_ok", price: "3만 ~ 10만원", reason: "가방 형태만 괜찮으면 중고도 무방", newQ: "기저귀가방", usedQ: "기저귀가방" },
-            { id: "car-mirror", name: "카시트 후방거울", required: false, condition: "used_ok", price: "1만~2만원", reason: "뒷좌석 카시트 아기 확인용", newQ: "카시트 후방거울", usedQ: "카시트 후방거울" },
             { id: "stroller-net", name: "유모차 방충망", required: false, condition: "new_consumable", price: "1만~2만원", reason: "계절용품, 저렴한 소모품", newQ: "유모차 방충망", usedQ: null },
           ],
         },
@@ -124,17 +132,15 @@ const DATA = {
             { id: "bouncer", name: "바운서", required: false, condition: "used_ok", price: "5만 ~ 15만원", reason: "사용기간 짧아 중고 활용도 높음", newQ: "아기 바운서", usedQ: "바운서" },
             { id: "mobile", name: "딸랑이/모빌", required: false, condition: "used_ok", price: "1만 ~ 3만원", reason: "소독 후 사용", newQ: "아기 모빌", usedQ: "모빌" },
             { id: "bw-book", name: "흑백/고대비 그림책", required: false, note: "시력 발달 초기 단계", condition: "used_ok", price: "1만~2만원", reason: "생후 1~3개월 시각 발달에 활용, 오염만 없으면 중고 무방", newQ: "흑백 그림책 신생아", usedQ: "흑백 그림책" },
-            { id: "flat-head-pillow", name: "짱구베개", required: false, note: "목 가누기 시작 후", condition: "used_ok", price: "1만 ~ 3만원", reason: "두상 관리용, 3~6개월경 사용하는 경우가 많음", newQ: "짱구베개", usedQ: "짱구베개" },
-            { id: "tummy-mat", name: "터미타임 매트", required: false, note: "생후 2개월경부터", condition: "used_ok", price: "3만~8만원", reason: "엎드려 놀기 연습용, 목·어깨 근력 발달에 도움", newQ: "터미타임 매트", usedQ: "터미타임 매트" },
+            { id: "tummy-mat", name: "터미타임 매트", required: false, note: "터미타임 자체는 생후 1~2주부터 짧게(1~2분) 시작 가능, 매트는 목을 좀 더 가누는 시기부터 활용도 높음", condition: "used_ok", price: "3만~8만원", reason: "엎드려 놀기 연습용, 목·어깨 근력 발달에 도움. 초기엔 매트 없이 보호자 가슴 위에서 시작해도 됨", newQ: "터미타임 매트", usedQ: "터미타임 매트" },
           ],
         },
         {
           id: "hygiene1",
           label: "위생",
           items: [
-            { id: "lotion", name: "아기로션/바디워시", required: true, condition: "new_ok", price: "세트 2만~4만원", reason: "피부 자극 적은 저자극 제품 권장, 소모품", newQ: "아기 로션 바디워시", usedQ: null },
             { id: "hairbrush", name: "헤어브러시/빗", required: false, condition: "used_ok", price: "5천~1만원", reason: "소독 후 사용 가능", newQ: "아기 헤어브러시", usedQ: "아기 헤어브러시" },
-            { id: "nail-file", name: "손톱줄(에머리보드)", required: false, condition: "new_ok", price: "5천원 미만", reason: "가위보다 안전하게 다듬을 수 있음", newQ: "아기 손톱줄", usedQ: null },
+            { id: "nail-file", name: "손톱줄(에머리보드)", required: false, condition: "new_ok", price: "5천원 미만", reason: "가위보다 안전하게 다듬을 수 있음, 손톱가위에 익숙해진 후 대체용으로도 활용", newQ: "아기 손톱줄", usedQ: null },
           ],
         },
         {
@@ -178,6 +184,7 @@ const DATA = {
             { id: "jumperoo", name: "쏘서/점퍼루", required: false, condition: "used_ok", price: "5만 ~ 15만원", reason: "사용기간 짧아 중고 최적", newQ: "쏘서 점퍼루", usedQ: "점퍼루" },
             { id: "teether", name: "치발기", required: false, condition: "new_ok", price: "5천 ~ 2만원", reason: "입에 직접 닿음, 소재 노화 우려", newQ: "치발기", usedQ: null },
             { id: "playmat", name: "플레이매트", required: false, condition: "used_ok", price: "5만 ~ 15만원", reason: "터미타임·뒤집기 연습용, 오염만 없으면 중고 무방", newQ: "플레이매트", usedQ: "플레이매트" },
+            { id: "flat-head-pillow", name: "짱구베개", required: false, note: "목 가누기 안정된 후", condition: "used_ok", price: "1만 ~ 3만원", reason: "두상 관리용, 3~6개월경 사용하는 경우가 많음", newQ: "짱구베개", usedQ: "짱구베개" },
           ],
         },
         {
